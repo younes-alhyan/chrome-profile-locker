@@ -1,5 +1,11 @@
 chrome.runtime.onStartup.addListener(() => {
   chrome.storage.local.set({ loggedIn: false });
+  chrome.tabs.query({}, (tabs) => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL("./lockScreen/index.html"),
+    });
+    chrome.tabs.remove(tabs[0].id);
+  });
 });
 function loggIn({ userInput }, sender, callback) {
   chrome.storage.local.get(["password"], (result) => {
@@ -31,6 +37,19 @@ function updatePassword({ currentPassword, newPassword }, callback) {
   });
 }
 
+function exit() {
+  chrome.storage.local.get(["loggedIn"], (result) => {
+    if (result.loggedIn) {
+      return;
+    }
+    chrome.tabs.query({}, (tabs) => {
+      for (let index = 0; index < tabs.length; index++) {
+        chrome.tabs.remove(tabs[index].id);
+      }
+    });
+  });
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const { msg } = message;
 
@@ -45,32 +64,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ isUpdated });
     });
   }
+
+  if (msg === "blur") {
+    exit();
+    return false;
+  }
   return true;
 });
-
 // Listen for navigation events
-chrome.webNavigation.onBeforeNavigate.addListener((details) => {
-  if (details.frameId !== 0) {
-    return;
-  }
-
+chrome.webNavigation.onBeforeNavigate.addListener(() => {
   chrome.storage.local.get(["loggedIn"], (result) => {
     const loggedIn = result.loggedIn;
     if (loggedIn) {
       return;
     }
-
-    // Ensure there's more than one tab before attempting to remove
     chrome.tabs.query({}, (tabs) => {
-      if (tabs.length > 1) {
-        // Remove second tab if there are more than one
-        if (tabs[1].url !== chrome.runtime.getURL("index.html")) {
-          console.log(tabs[1]);
-          chrome.tabs.remove(tabs[1].id);
-        }
-      } else {
-        chrome.tabs.create({ url: chrome.runtime.getURL("./lockScreen/index.html") });
-        chrome.tabs.remove(tabs[0].id);
+      if (tabs[0].url !== chrome.runtime.getURL("./lockScreen/index.html")) {
+        chrome.tabs.update(tabs[0].id, {
+          url: chrome.runtime.getURL("./lockScreen/index.html"),
+        });
       }
     });
   });

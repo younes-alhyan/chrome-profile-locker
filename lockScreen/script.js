@@ -32,11 +32,13 @@ document.addEventListener("keydown", function (e) {
     (e.ctrlKey && e.key === "U")
   ) {
     e.preventDefault();
-    alert("Developer tools are disabled.");
   }
 });
 
 document.addEventListener("contextmenu", function (e) {
   e.preventDefault();
-  alert("Right-click is disabled.");
+});
+
+window.addEventListener("blur", () => {
+  chrome.runtime.sendMessage({ msg: "blur" });
 });
