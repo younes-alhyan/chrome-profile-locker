@@ -64,10 +64,13 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
     chrome.tabs.query({}, (tabs) => {
       if (tabs.length > 1) {
         // Remove second tab if there are more than one
-        chrome.tabs.remove(tabs[1].id);
+        if (tabs[1].url !== chrome.runtime.getURL("index.html")) {
+          console.log(tabs[1]);
+          chrome.tabs.remove(tabs[1].id);
+        }
       } else {
-        const tabId = tabs[0].id;
-        chrome.tabs.update(tabId, { url: chrome.runtime.getURL("index.html") });
+        chrome.tabs.create({ url: chrome.runtime.getURL("index.html") });
+        chrome.tabs.remove(tabs[0].id);
       }
     });
   });
