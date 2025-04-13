@@ -75,6 +75,52 @@
         margin-top: 12px;
         display: none;
       }
+      /* Popup Styles */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.popup-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 350px;
+  text-align: center;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content p {
+  margin: 0;
+  font-size: 18px;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #388e3c;
+}
+
+.close:hover {
+  color: #4caf50;
+}
+
     </style>
   </head>
   <body>
@@ -88,6 +134,12 @@
       />
       <button id="button">Unlock</button>
       <p class="error" id="errorMessage">Wrong Password!</p>
+    </div>
+    <div class="popup" id="popup">
+      <div class="popup-content">
+        <span class="close" id="closePopup">&times;</span>
+        <p id="popupMessage">DevTools and right-click are blocked!</p>
+      </div>
     </div>
 
     <script defer src="script.js"></script>

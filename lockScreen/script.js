@@ -1,5 +1,23 @@
 const button = document.getElementById("button");
 const errorMessage = document.getElementById("errorMessage");
+const popup = document.getElementById("popup");
+const closePopup = document.getElementById("closePopup");
+const popupMessage = document.getElementById("popupMessage");
+
+function showPopup(message) {
+  popupMessage.textContent = message;
+  popup.style.display = "flex";
+  setTimeout(() => {
+    popup.style.opacity = "1";
+  }, 50); // Delay to trigger opacity transition
+}
+
+function hidePopup() {
+  popup.style.opacity = "0";
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 300); // Wait for the fade-out effect to complete before hiding
+}
 
 function handleInput() {
   const userInput = document.getElementById("input").value.trim();
@@ -32,13 +50,17 @@ document.addEventListener("keydown", function (e) {
     (e.ctrlKey && e.key === "U")
   ) {
     e.preventDefault();
+    showPopup("DevTools are blocked!");
   }
 });
 
 document.addEventListener("contextmenu", function (e) {
   e.preventDefault();
+  showPopup("right-click is blocked!");
 });
 
 window.addEventListener("blur", () => {
   chrome.runtime.sendMessage({ msg: "blur" });
 });
+
+document.addEventListener("click", hidePopup);
