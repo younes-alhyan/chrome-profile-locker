@@ -10,7 +10,7 @@ function loggIn({ userInput }, sender, callback) {
         if (sender.tab && sender.tab.id) {
           callback(true);
           chrome.tabs.update(sender.tab.id, { url: "chrome://newtab" });
-          chrome.action.setPopup({ popup: "popup.html" });
+          chrome.action.setPopup({ popup: "./popup/popup.html" });
         }
       });
     } else {
@@ -69,7 +69,7 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
           chrome.tabs.remove(tabs[1].id);
         }
       } else {
-        chrome.tabs.create({ url: chrome.runtime.getURL("index.html") });
+        chrome.tabs.create({ url: chrome.runtime.getURL("./lockScreen/index.html") });
         chrome.tabs.remove(tabs[0].id);
       }
     });
