@@ -1,6 +1,6 @@
 # 🔒 Chrome Profile Locker
 
-![Chrome](https://img.shields.io/badge/Chrome-Extension-blue?logo=google-chrome\&logoColor=white) ![Version](https://img.shields.io/badge/Version-1.0.0-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
+![Chrome](https://img.shields.io/badge/Chrome-Extension-blue?logo=google-chrome\&logoColor=white) ![Version](https://img.shields.io/badge/Version-1.0.0-green)
 
 > Protect your Chrome profile with a password! 🛡️
 
